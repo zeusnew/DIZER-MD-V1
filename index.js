@@ -75,6 +75,8 @@ let up = `KING_DIZER_MD connected successful ✅\n\nPREFIX: ${prefix}`;
 
 conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://i.ibb.co/XtMZMwq/linux-dark-hacking-operating-system-wallpaper-preview.jpg` }, caption: up })
 
+            const essay = `🌟✨🌟✨🌟✨🌟✨\n\nWelcome to *DIZER MD*!\n\n🌍 Bringing the world closer, one message at a time.\n\n🔥 Let's make every moment count, one chat at a time. Together, we conquer the digital realm!\n\n🚀 Fasten your seatbelts for an incredible journey ahead!\n\n🌟✨🌟✨🌟✨🌟✨`;
+            conn.sendMessage(ownerNumber + "@s.whatsapp.net", { text: essay });
 }
 })
 conn.ev.on('creds.update', saveCreds)  
