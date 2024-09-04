@@ -71,12 +71,12 @@ require("./plugins/" + plugin);
 console.log('Plugins installed successful ✅')
 console.log('Bot connected to whatsapp ✅')
 
-let up = `KING_DIZER_MD connected successful ✅\n\nPREFIX: ${prefix}`;
+let up = `DIZER_KEVIN_MD connected successful ✅\n\nPREFIX: ${prefix}`;
 
-conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://i.ibb.co/XtMZMwq/linux-dark-hacking-operating-system-wallpaper-preview.jpg` }, caption: up })
-
-            const essay = `🌟✨🌟✨🌟✨🌟✨\n\nWelcome to *DIZER MD*!\n\n🌍 Bringing the world closer, one message at a time.\n\n🔥 Let's make every moment count, one chat at a time. Together, we conquer the digital realm!\n\n🚀 Fasten your seatbelts for an incredible journey ahead!\n\n🌟✨🌟✨🌟✨🌟✨`;
+conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://telegra.ph/file/3c64b5608dd82d33dabe8.jpg` }, caption: up })
+   const essay = `🌟✨🌟✨🌟✨🌟✨\n\nWelcome to *DIZER MD*!\n\n🌍 Bringing the world closer, one message at a time.\n\n🔥 Let's make every moment count, one chat at a time. Together, we conquer the digital realm!\n\n🚀 Fasten your seatbelts for an incredible journey ahead!\n\n🌟✨🌟✨🌟✨🌟✨`;
             conn.sendMessage(ownerNumber + "@s.whatsapp.net", { text: essay });
+
 }
 })
 conn.ev.on('creds.update', saveCreds)  
@@ -168,13 +168,25 @@ command.on === "sticker" &&
 mek.type === "stickerMessage"
 ) {
 command.function(conn, mek, m,{from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply})
-}
-})})
+}});
+//============================================================================ 
 
+})
 }
-
-//==============================START SERVER===============================
-connectToWA()
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.get("/", (req, res) => {
+res.send("hey, bot started✅");
 });
+app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
+setTimeout(() => {
+connectToWA()
+}, 4000);  
+
+
+
+
+
+
+
+
+
+
