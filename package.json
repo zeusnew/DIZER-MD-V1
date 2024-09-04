@@ -1,12 +1,12 @@
 {
-  "name": "kevinbot",
+  "name": "dizerbot",
   "version": "1.0.0",
   "description": "A WhatsApp bot created using Node.js",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start index.js --deep-monitoring --attach --name kevinbot",
-    "stop": "pm2 stop kevinbot",
-    "restart": "pm2 restart kevinbot"
+    "start": "pm2 start index.js --deep-monitoring --attach --name dizerbot",
+    "stop": "pm2 stop dizerbot",
+    "restart": "pm2 restart dizerbot"
   },
   "dependencies": {
     "@whiskeysockets/baileys": "6.6.0",
@@ -23,6 +23,5 @@
     "megajs": "^1.1.0",
     "vm": "^0.1.0",
     "qrcode-terminal": "^0.12.0"
-  
   }
 }
