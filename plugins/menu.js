@@ -2,6 +2,7 @@ const config = require('../config');
 const { cmd, commands } = require('../command');
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson } = require('../lib/functions');
 
+// Function to generate message ID
 function genMsgId() {
   const prefix = "3EB";
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -26,58 +27,13 @@ cmd({
   use: '.menu',
   filename: __filename
 },
-  async (conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isSachintha, isSavi, isSadas, isMani, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+  async (conn, mek, m, { from, pushname, reply }) => {
     try {
       let menuc1 = ``;
       for (let i = 0; i < commands.length; i++) {
-        if (commands[i].category === 'admin') {
-          if (!commands[i].dontAddCommandList) {
-            menuc1 += `*│►* .${commands[i].pattern}\n`;
-          }
-        }
-      };
-
-      let menuc2 = ``;
-      for (let i = 0; i < commands.length; i++) {
         if (commands[i].category === 'main') {
           if (!commands[i].dontAddCommandList) {
-            menuc2 += `*│⩥* .${commands[i].pattern}\n`;
-          }
-        }
-      };
-
-      let menuc3 = ``;
-      for (let i = 0; i < commands.length; i++) {
-        if (commands[i].category === 'convert') {
-          if (!commands[i].dontAddCommandList) {
-            menuc3 += `*│►* .${commands[i].pattern}\n`;
-          }
-        }
-      };
-
-      let menuc4 = ``;
-      for (let i = 0; i < commands.length; i++) {
-        if (commands[i].category === 'search') {
-          if (!commands[i].dontAddCommandList) {
-            menuc4 += `*│►* .${commands[i].pattern}\n`;
-          }
-        }
-      };
-
-      let menuc = ``;
-      for (let i = 0; i < commands.length; i++) {
-        if (commands[i].category === 'download') {
-          if (!commands[i].dontAddCommandList) {
-            menuc += `*│►* .${commands[i].pattern}\n`;
-          }
-        }
-      };
-
-      let menuc6 = ``;
-      for (let i = 0; i < commands.length; i++) {
-        if (commands[i].category === 'owner') {
-          if (!commands[i].dontAddCommandList) {
-            menuc6 += `*│⩥* .${commands[i].pattern}\n`;
+            menuc1 += `*│►* .${commands[i].pattern}\n`;
           }
         }
       };
@@ -93,29 +49,19 @@ cmd({
 *│🧙‍♂️ MAIN COMMANDS*
 *│   ───────*
 
-${menuc2}*╰───────────●●►*
+${menuc1}*╰───────────●●►*
 
 *•𝘿𝘐𝙕𝙀𝙍 𝙈𝘿 𝙈𝙐𝙇𝙏𝙄 𝘿𝙀𝙑𝙄𝘾𝙀•*`;
 
-      // Interactive buttons
-      const buttons = [
-        { buttonId: 'main_btn', buttonText: { displayText: 'Main Commands' }, type: 1 },
-        { buttonId: 'admin_btn', buttonText: { displayText: 'Admin Commands' }, type: 1 },
-        { buttonId: 'download_btn', buttonText: { displayText: 'Download Commands' }, type: 1 }
-      ];
+      // Sending the menu with the specified image
+      await conn.sendMessage(from, { image: { url: 'https://telegra.ph/file/a1519f1a766f7b0ed86e6.png' }, caption: menumg }, { quoted: mek, messageId: genMsgId() });
 
-      const buttonMessage = {
-        image: { url: 'https://telegra.ph/file/a1519f1a766f7b0ed86e6.png' }, // Add your image URL here
-        caption: menumg,
-        footer: 'DIZER MD Bot Menu',
-        buttons: buttons,
-        headerType: 4
-      };
+      // Send voice message after sending the menu
+      const audioUrl = 'https://github.com/zeusnew/DIZER-MD-V1/raw/main/alive.mp3';  // Your provided voice file URL
+      await conn.sendMessage(from, { audio: { url: audioUrl }, mimetype: 'audio/mpeg', ptt: true }, { quoted: mek });
 
-      // Sending the menu with buttons
-      await conn.sendMessage(from, buttonMessage, { quoted: mek, messageId: genMsgId() });
     } catch (e) {
       reply('*Error !!*');
-      l(e);
+      console.error(e);
     }
   });
