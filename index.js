@@ -75,12 +75,8 @@ async function connectToWA() {
 
       let up = `DIZER_KEVIN_MD connected successfully ✅\n\nPREFIX: ${prefix}`;
       conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://telegra.ph/file/3c64b5608dd82d33dabe8.jpg` }, caption: up })
-
-      const essay = `🌟✨🌟✨🌟✨🌟✨\n\nWelcome to *DIZER MD*!\n\n🌍 Bringing the world closer, one message at a time.\n\n🔥 Let's make every moment count, one chat at a time. Together, we conquer the digital realm!\n\n🚀 Fasten your seatbelts for an incredible journey ahead!\n\n🌟✨🌟✨🌟✨🌟✨`;
-      conn.sendMessage(ownerNumber + "@s.whatsapp.net", { text: essay });
     }
   })
-
   conn.ev.on('creds.update', saveCreds)
 
   conn.ev.on('messages.upsert', async (mek) => {
