@@ -97,7 +97,8 @@ ${menuc2}*╰───────────●●►*
 
 *•𝘿𝘐𝙕𝙀𝙍 𝙈𝘿 𝙈𝙐𝙇𝙏𝙄 𝘿𝙀𝙑𝙄𝘾𝙀•*`;
 
-      await conn.sendMessage(from, { image: { url: config.LOGO }, caption: menumg }, { quoted: mek, messageId: genMsgId() });
+      // Sending the menu with the specified image
+      await conn.sendMessage(from, { image: { url: 'https://telegra.ph/file/a1519f1a766f7b0ed86e6.png' }, caption: menumg }, { quoted: mek, messageId: genMsgId() });
     } catch (e) {
       reply('*Error !!*');
       l(e);
