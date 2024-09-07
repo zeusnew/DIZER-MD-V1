@@ -69,11 +69,11 @@ require("./plugins/" + plugin);
 console.log('Plugins installed successful ✅')
 console.log('Bot connected to whatsapp ✅')
 
-let up = `𝗕𝗛𝗔𝗦𝗛𝗜 𝗠𝗗 𝗖𝗢𝗡𝗘𝗖𝗧𝗘𝗗 ✅
+let up = `DIZER 𝗠𝗗 𝗖𝗢𝗡𝗘𝗖𝗧𝗘𝗗 ✅
 
-Bhashi MD Verify Powerful Whatsapp Bot. Base Build Using By Baileys API Keys.`;
+DIZER MD Verify Powerful Whatsapp Bot. Base Build Using By Baileys API Keys.`;
 
-conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://telegra.ph/file/353e86db7ae0ef9bccec0.jpg` }, caption: up })
+conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://github.com/user-attachments/assets/e2d0e349-34e2-4e00-ae86-545a32e26b14` }, caption: up })
 
 }
 })
