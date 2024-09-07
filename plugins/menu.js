@@ -97,8 +97,23 @@ ${menuc2}*╰───────────●●►*
 
 *•𝘿𝘐𝙕𝙀𝙍 𝙈𝘿 𝙈𝙐𝙇𝙏𝙄 𝘿𝙀𝙑𝙄𝘾𝙀•*`;
 
-      // Sending the menu with the specified image
-      await conn.sendMessage(from, { image: { url: 'https://telegra.ph/file/a1519f1a766f7b0ed86e6.png' }, caption: menumg }, { quoted: mek, messageId: genMsgId() });
+      // Interactive buttons
+      const buttons = [
+        { buttonId: 'main_btn', buttonText: { displayText: 'Main Commands' }, type: 1 },
+        { buttonId: 'admin_btn', buttonText: { displayText: 'Admin Commands' }, type: 1 },
+        { buttonId: 'download_btn', buttonText: { displayText: 'Download Commands' }, type: 1 }
+      ];
+
+      const buttonMessage = {
+        image: { url: 'https://telegra.ph/file/a1519f1a766f7b0ed86e6.png' }, // Add your image URL here
+        caption: menumg,
+        footer: 'DIZER MD Bot Menu',
+        buttons: buttons,
+        headerType: 4
+      };
+
+      // Sending the menu with buttons
+      await conn.sendMessage(from, buttonMessage, { quoted: mek, messageId: genMsgId() });
     } catch (e) {
       reply('*Error !!*');
       l(e);
