@@ -73,7 +73,7 @@ let up = `DIZER 𝗠𝗗 𝗖𝗢𝗡𝗘𝗖𝗧𝗘𝗗 ✅
 
 DIZER MD Verify Powerful Whatsapp Bot. Base Build Using By Baileys API Keys.`;
 
-conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://github.com/user-attachments/assets/e2d0e349-34e2-4e00-ae86-545a32e26b14` }, caption: up })
+conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://telegra.ph/file/a1519f1a766f7b0ed86e6.png` }, caption: up })
 
 }
 })
