@@ -19,7 +19,7 @@ const { sms, downloadMediaMessage } = require('./lib/msg');
 const axios = require('axios');
 const { File } = require('megajs');
 
-const ownerNumber = ['94779007994'];
+const ownerNumber = ['+94712335744'];
 
 //===================SESSION-AUTH============================
 if (!fs.existsSync(__dirname + '/auth_info_baileys/creds.json')) {
