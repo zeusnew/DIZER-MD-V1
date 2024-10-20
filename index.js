@@ -8,51 +8,53 @@ const {
   Browsers
 } = require('@whiskeysockets/baileys');
 
-const l = console.log;
-const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson } = require('./lib/functions');
-const fs = require('fs');
-const P = require('pino');
-const config = require('./config');
-const qrcode = require('qrcode-terminal');
-const util = require('util');
-const { sms, downloadMediaMessage } = require('./lib/msg');
-const axios = require('axios');
-const { File } = require('megajs');
+const express = require("express");
+const fs = require("fs");
+const P = require("pino");
+const config = require("./config");
+const { File } = require("megajs");
+const { getBuffer, sms } = require("./lib/functions");
+const connectDB = require('./lib/mongodb');
+const { readEnv } = require('./lib/database');
+const path = require("path");
 
+const app = express();
+const port = process.env.PORT || 8000;
 const ownerNumber = ['+94712335744'];
 
 //===================SESSION-AUTH============================
-if (!fs.existsSync(__dirname + '/auth_info_baileys/creds.json')) {
-  if (!config.SESSION_ID) return console.log('Please add your session to SESSION_ID env !!');
-  const sessdata = config.SESSION_ID;
-  const filer = File.fromURL(`https://mega.nz/file/${sessdata}`);
-  filer.download((err, data) => {
-    if (err) throw err;
-    fs.writeFile(__dirname + '/auth_info_baileys/creds.json', data, () => {
-      console.log("Session downloaded ✅");
-    });
-  });
-}
+async function initializeSession() {
+  if (!fs.existsSync(__dirname + '/auth_info_baileys/creds.json')) {
+    if (!config.SESSION_ID) return console.log('Please add your session to SESSION_ID env !!');
+    const sessdata = config.SESSION_ID;
+    const filer = File.fromURL(`https://mega.nz/file/${sessdata}`);
 
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 8000;
+    return new Promise((resolve, reject) => {
+      filer.download((err, data) => {
+        if (err) return reject(err);
+        fs.writeFile(__dirname + '/auth_info_baileys/creds.json', data, (writeErr) => {
+          if (writeErr) return reject(writeErr);
+          console.log("Session downloaded ✅");
+          resolve();
+        });
+      });
+    });
+  }
+}
 
 //=============================================
 
 async function connectToWA() {
-
   // Connect to MongoDB
-  const connectDB = require('./lib/mongodb');
-  connectDB();
-  
-  const { readEnv } = require('./lib/database');
+  await connectDB();
+
+  // Load configurations
   const config = await readEnv();
   const prefix = config.PREFIX;
 
-  console.log("Connecting wa bot 🧬...");
+  console.log("Connecting to WhatsApp bot 🧬...");
   const { state, saveCreds } = await useMultiFileAuthState(__dirname + '/auth_info_baileys/');
-  var { version } = await fetchLatestBaileysVersion();
+  const { version } = await fetchLatestBaileysVersion();
 
   const conn = makeWASocket({
     logger: P({ level: 'silent' }),
@@ -63,29 +65,35 @@ async function connectToWA() {
     version
   });
 
-  conn.ev.on('connection.update', (update) => {
+  conn.ev.on('connection.update', async (update) => {
     const { connection, lastDisconnect } = update;
+
     if (connection === 'close') {
       if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
-        connectToWA();
+        await connectToWA();
       }
     } else if (connection === 'open') {
-      console.log('😼 Installing...');
-      const path = require('path');
+      console.log('😼 Installing plugins...');
       fs.readdirSync("./plugins/").forEach((plugin) => {
-        if (path.extname(plugin).toLowerCase() == ".js") {
+        if (path.extname(plugin).toLowerCase() === ".js") {
           require("./plugins/" + plugin);
         }
       });
       console.log('Plugins installed successfully ✅');
       console.log('Bot connected to WhatsApp ✅');
 
-      let up = `𝗛𝗲𝘆 ${name},\n\n𝗛𝗼𝗽𝗲 𝘆𝗼𝘂'𝗿𝗲 𝗵𝗮𝘃𝗶𝗻𝗴 𝗮 𝗴𝗿𝗲𝗮𝘁 𝗱𝗮𝘆!\n\n𝗜'𝗺 𝗼𝗻𝗹𝗶𝗻𝗲 𝗻𝗼𝘄 𝗮𝗻𝗱 𝗿𝗲𝗮𝗱𝘆 𝘁𝗼 𝗮𝘀𝘀𝗶𝘀𝘁 𝘆𝗼𝘂 𝘄𝗶𝘁𝗵 𝗮𝗻𝘆𝘁𝗵𝗶𝗻𝗴 𝘆𝗼𝘂 𝗻𝗲𝗲𝗱. 🚀\n\n𝗟𝗲𝘁'𝘀 𝗴𝗲𝘁 𝘀𝘁𝗮𝗿𝘁𝗲𝗱! 🤡`;
+      const welcomeMessage = `𝗛𝗲𝘆 𝗼𝘄𝗻𝗲𝗿,\n\n𝗜'𝗺 𝗼𝗻𝗹𝗶𝗻𝗲 𝗻𝗼𝘄 𝗮𝗻𝗱 𝗿𝗲𝗮𝗱𝘆 𝘁𝗼 𝗮𝘀𝘀𝗶𝘀𝘁 𝘆𝗼𝘂 𝘄𝗶𝘁𝗵 𝗮𝗻𝘆𝘁𝗵𝗶𝗻𝗴 𝘆𝗼𝘂 𝗻𝗲𝗲𝗱. 🚀`;
 
-      conn.sendMessage(ownerNumber + "@s.whatsapp.net", {
-        image: { url: 'https://telegra.ph/file/94055e3a7e18f50199374.jpg' },
-        caption: up
-      });
+      // Ensure you are using the correct format for sending the message
+      try {
+        await conn.sendMessage(jidNormalizedUser(ownerNumber[0]), {
+          image: { url: 'https://telegra.ph/file/94055e3a7e18f50199374.jpg' },
+          caption: welcomeMessage
+        });
+        console.log("Welcome message sent successfully ✅");
+      } catch (error) {
+        console.error("Error sending welcome message:", error);
+      }
     }
   });
 
@@ -94,6 +102,7 @@ async function connectToWA() {
   conn.ev.on('messages.upsert', async (mek) => {
     mek = mek.messages[0];
     if (!mek.message) return;
+
     mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
 
     if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_READ_STATUS === "true") {
@@ -109,21 +118,28 @@ async function connectToWA() {
     const args = body.trim().split(/ +/).slice(1);
     const q = args.join(' ');
 
-    const reply = (teks) => {
-      conn.sendMessage(from, { text: teks }, { quoted: mek });
+    const reply = (text) => {
+      conn.sendMessage(from, { text }, { quoted: mek });
     };
 
     // Command handling code here...
-
   });
 }
 
+// Initialize session and then start connecting to WhatsApp
+initializeSession()
+  .then(() => {
+    setTimeout(connectToWA, 4000);
+  })
+  .catch(err => {
+    console.error("Error initializing session:", err);
+  });
+
+// Express server setup
 app.get("/", (req, res) => {
   res.send("Hey, the bot is up and running✅");
 });
 
-app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
-
-setTimeout(() => {
-  connectToWA();
-}, 4000);
+app.listen(port, () => {
+  console.log(`Server listening on port http://localhost:${port}`);
+});
