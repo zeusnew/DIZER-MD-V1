@@ -8,12 +8,14 @@ const apilink = 'https://dark-yasiya-news-apis.vercel.app/api' // API LINK (DO N
 // Helper function to format the news
 const formatNews = (newsType, emoji, news) => {
     return `
-   ${emoji} *${newsType} NEWS* ${emoji}
+   ${emoji} *_${newsType} NEWS_* ${emoji}
 
-📰 *Title*: ${news.result.title}
-📝 *Description*: ${news.result.desc}
-📅 *Date*: ${news.result.date || 'Not available'}
+📰 *Title*: _${news.result.title}_
+📝 *Description*: _${news.result.desc}_
+📅 *Date*: _${news.result.date || 'Not available'}_
 🔗 *Link*: [Click here to read](${news.result.url})
+
+*Powered by Dizer*
     `;
 }
 
